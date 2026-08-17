@@ -1,0 +1,39 @@
+# μSAM LIVECell Specialist Fine-tuning Configuration
+# Reference: Archit et al., Nature Methods 2025
+# Mirrors livecell_finetuning.py from:
+# https://github.com/computational-cell-analytics/micro-sam/blob/main/finetuning/livecell_finetuning.py
+
+model:
+  type: vit_b            # SAM encoder: vit_t, vit_b, vit_l, vit_h
+                         # Paper uses vit_l (ViT-L); we use vit_b for Colab compatibility
+
+training:
+  patch_shape: [520, 704]   # training patch size (from official script line 54)
+  n_objects_per_batch: 25   # objects sampled per batch (line 55)
+  n_iterations: 100000      # paper: 250000 for ViT-L; 100k matches script default
+  lr: 1.0e-5                # line 80
+  scheduler:
+    mode: min
+    factor: 0.9
+    patience: 10
+  early_stopping: 10        # line 75
+
+data:
+  train_batch_size: 2       # line 33
+  val_batch_size: 1         # line 38
+  num_workers: 2            # paper: 16; reduced for Colab
+  cell_types: null          # null = all 8 cell types
+  label_transform:
+    distances: true
+    boundary_distances: true
+    directed_distances: false
+    foreground: true
+    instances: true
+    min_size: 25
+  raw_transform: identity   # no rescaling to [-1, 1]
+
+# Paper-reported results (Table 1, Automatic Instance Segmentation)
+paper_results:
+  sam_vit_l_zero_shot: 0.431
+  musam_generalist_vit_b: 0.559
+  musam_livecell_specialist_vit_l: 0.617  # paper target

@@ -1,0 +1,28 @@
+# Datasets & Heavy Files (Exceeds GitHub 100MB limit)
+**/data/
+data/
+*.zip
+*.tar.gz
+*.tif
+*.tiff
+*.json
+
+# Results & Checkpoints
+**/results/checkpoints/
+**/results/predictions/
+results/checkpoints/
+results/predictions/
+*.pt
+*.pth
+
+# Python & Environment
+__pycache__/
+*.py[cod]
+*$py.class
+.venv*/
+env/
+venv/
+.ipynb_checkpoints/
+
+# OS Specific
+.DS_Store
